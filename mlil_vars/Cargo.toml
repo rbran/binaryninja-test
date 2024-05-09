@@ -1,0 +1,8 @@
+[package]
+name = "mlil_vars"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+binaryninja = { path = "../../binaryninja-api/rust" }
+mimalloc = { version = "*", features = ["secure"] }

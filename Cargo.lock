@@ -3,6 +3,13 @@
 version = 3
 
 [[package]]
+name = "add_markers"
+version = "0.1.0"
+dependencies = [
+ "binaryninja",
+]
+
+[[package]]
 name = "aho-corasick"
 version = "1.1.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -19,15 +26,6 @@ dependencies = [
  "lazy_static",
  "libc",
  "log",
-]
-
-[[package]]
-name = "binaryninja-test"
-version = "0.1.0"
-dependencies = [
- "binaryninja",
- "mimalloc",
- "tikv-jemallocator",
 ]
 
 [[package]]
@@ -115,6 +113,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "functions"
+version = "0.1.0"
+dependencies = [
+ "binaryninja",
+ "tikv-jemallocator",
+]
+
+[[package]]
 name = "glob"
 version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -199,6 +205,14 @@ name = "minimal-lexical"
 version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "68354c5c6bd36d73ff3feceb05efa59b6acb7626617f4962be322a825e61f79a"
+
+[[package]]
+name = "mlil_vars"
+version = "0.1.0"
+dependencies = [
+ "binaryninja",
+ "mimalloc",
+]
 
 [[package]]
 name = "nom"

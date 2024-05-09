@@ -1,0 +1,7 @@
+[package]
+name = "add_markers"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+binaryninja = { path = "../../binaryninja-api/rust" }
