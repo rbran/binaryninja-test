@@ -60,5 +60,14 @@ fn main() {
         assert!(matches!(value, PossibleValueSet::ConstantValue { value: 1 }));
     }
 
+    mlil.clear_user_var_value(&var, INST_ADDR).unwrap();
+    // ensure the value was deleted
+    for (_variable, addr_and_arch, _value) in mlil.user_var_values().all() {
+        if addr_and_arch.address != INST_ADDR {
+            continue;
+        }
+        panic!("Value was not deleted")
+    }
+
     binaryninja::headless::shutdown();
 }
