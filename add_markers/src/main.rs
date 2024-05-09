@@ -3,7 +3,7 @@ use binaryninja::binaryview::BinaryViewExt;
 fn main() {
     binaryninja::headless::init();
     let file = format!("{}/../assets/parse_args", env!("CARGO_MANIFEST_DIR"));
-    let bv = binaryninja::load(&file).unwrap();
+    let bv = binaryninja::load(file).unwrap();
     let functions = bv.functions_at(0x001050);
     assert_eq!(functions.len(), 1);
     let main = functions.get(0);

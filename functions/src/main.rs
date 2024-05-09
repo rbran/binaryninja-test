@@ -7,7 +7,7 @@ static GLOBAL: Jemalloc = Jemalloc;
 fn main() {
     binaryninja::headless::init();
     let file = format!("{}/../assets/parse_args", env!("CARGO_MANIFEST_DIR"));
-    let bv = binaryninja::load(&file).unwrap();
+    let bv = binaryninja::load(file).unwrap();
 
     // we need to find at lest the functions:
     let mut functions = [
