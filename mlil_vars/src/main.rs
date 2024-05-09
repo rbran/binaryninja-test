@@ -1,9 +1,8 @@
-use binaryninja::{
-    binaryview::BinaryViewExt, mlil::MediumLevelILLiftedInstructionKind, types::PossibleValueSet,
-};
+use binaryninja::binaryview::BinaryViewExt;
+use binaryninja::mlil::MediumLevelILLiftedInstructionKind;
+use binaryninja::types::{PossibleValueSet, Type};
 
 use mimalloc::MiMalloc;
-
 #[global_allocator]
 static GLOBAL: MiMalloc = MiMalloc;
 
@@ -30,17 +29,13 @@ fn main() {
     let var = mlil
         .basic_blocks()
         .iter()
-        .find_map(|block| {
-            block
-                .iter()
-                .find(|inst| inst.address == INST_ADDR)
-                .map(|inst| {
-                    let MediumLevelILLiftedInstructionKind::SetVar(set_var) = inst.lift().kind
-                    else {
-                        panic!()
-                    };
-                    set_var.dest
-                })
+        .flat_map(|block| block.iter())
+        .find(|inst| inst.address == INST_ADDR)
+        .map(|inst| {
+            let MediumLevelILLiftedInstructionKind::SetVar(set_var) = inst.lift().kind else {
+                panic!()
+            };
+            set_var.dest
         })
         .unwrap();
 
@@ -57,17 +52,29 @@ fn main() {
         if addr_and_arch.address != INST_ADDR {
             continue;
         }
-        assert!(matches!(value, PossibleValueSet::ConstantValue { value: 1 }));
+        assert!(matches!(
+            value,
+            PossibleValueSet::ConstantValue { value: 1 }
+        ));
     }
-
+    // clear the user value set
     mlil.clear_user_var_value(&var, INST_ADDR).unwrap();
-    // ensure the value was deleted
+    // ensure the value was cleared
     for (_variable, addr_and_arch, _value) in mlil.user_var_values().all() {
         if addr_and_arch.address != INST_ADDR {
             continue;
         }
         panic!("Value was not deleted")
     }
+
+    // create a new variable
+    mlil.create_user_var(&var, &Type::char(), "MyVar", true);
+    // assure the variables was created
+    assert!(mlil.is_var_user_defined(&var));
+    // delete the new variables
+    mlil.delete_user_var(&var);
+    // assure the variables was deleted
+    assert!(!mlil.is_var_user_defined(&var));
 
     binaryninja::headless::shutdown();
 }
